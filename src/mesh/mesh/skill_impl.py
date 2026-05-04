@@ -1,17 +1,3 @@
-# Copyright (c) 2026 TODO. All rights reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 import time
 
 from rclpy.lifecycle import Node
@@ -29,29 +15,11 @@ from diagnostic_msgs.msg import DiagnosticArray, DiagnosticStatus, KeyValue
 
 
 class MeshSkillImpl(Node):
-    """
-    Implementation of mesh.
-
-    This is the main class for the skill. It is a ROS2 node that uses the
-    lifecycle feature of ROS2 to manage its states.
-
-    This basic skill template does not perform any particular task, and
-    should be used as a starting point to implement your own skills.
-
-    Don't forget to update accordingly the manifest of the skill, included in
-    package.xml, to describe what your skill is actually doing.
-    """
 
     def __init__(self) -> None:
-        """Construct the node."""
+
         super().__init__('skill_mesh')
 
-        # Declare ROS parameters
-        #
-        # You can add here any parameters that you want to be configurable
-        # from the command line or from a launch file.
-        #
-        # You should also add the same parameters to config/00-defaults.yml
         self.declare_parameter(
             'parameter_name', 'parameter_value',
             ParameterDescriptor(description='A parameter for the skill')
@@ -62,34 +30,22 @@ class MeshSkillImpl(Node):
         self._diag_pub = None
         self._diag_timer = None
 
-        #######################################
-        #
-        # TODO: Add here any other variables
-        # that you need in your node
-        # Initialisation should happen in the
-        # on_configure state.
-        #
-
         self._nb_requests = 0
 
         self.get_logger().info('Skill mesh started, but not yet configured.')
 
     def run_skill(self):
-        """
-        Mock-up function.
 
-        Here, we just simulate a request returning a random name.
-        """
         self.get_logger().info("...running the skill")
 
-        time.sleep(1)  # simulate a long request
+        time.sleep(1)
 
         result = "this is an important result"
 
         return result
 
     def on_request_goal(self, goal_handle):
-        """Accept incoming goal if appropriate."""
+
         if self._state_machine.current_state[1] != "active":
             self.get_logger().error("Skill is not active yet, rejecting goal")
             return GoalResponse.REJECT
@@ -98,10 +54,10 @@ class MeshSkillImpl(Node):
         return GoalResponse.ACCEPT
 
     def on_request_exec(self, goal_handle):
-        """Process incoming goal."""
+
         self.get_logger().info(f"Executing the skill with data: {goal_handle.request.skill_data}")
 
-        # perform request here
+
         res = self.run_skill()
 
         self.get_logger().info("Goal executed successfully")
@@ -109,46 +65,16 @@ class MeshSkillImpl(Node):
 
         return Mesh.Result(value=f"{res}")
 
-    #################################
-    #
-    # Lifecycle transitions callbacks
-    #
     def on_configure(self, state: State) -> TransitionCallbackReturn:
-        """
-        Configure the skill.
 
-        You usually want to do the following in this state:
-        - Read ROS parameters (if any)
-        - Create ROS action clients and servers
-        - Create ROS publishers and subscribers
-        - Start publishing diagnostic information
-
-        While the skill is configured, but not activated, it should not
-        perform any actions that are not required for configuration, such as
-        effectively processing data or calling external services.
-        For instance, incoming goals on an action server should be rejected.
-
-        :return: The state machine either invokes a transition to the
-            "inactive" state or stays in "unconfigured" depending on the
-            return value.
-            TransitionCallbackReturn.SUCCESS transitions to "inactive".
-            TransitionCallbackReturn.FAILURE transitions to "unconfigured".
-            TransitionCallbackReturn.ERROR or any uncaught exceptions to
-            "errorprocessing"
-        """
         self._nb_requests = 0
 
-        # example API for our skill
-        # (note that we create the action server in the configure state,
-        # so that the API is available to users, but we only start accepting
-        # goals in the activate state)
         self.skill_server = ActionServer(self,
                                          Mesh,
                                          "/skill/mesh",
                                          goal_callback=self.on_request_goal,
                                          execute_callback=self.on_request_exec)
 
-        # configure and start diagnostics publishing
         self._diag_pub = self.create_publisher(DiagnosticArray, '/diagnostics', 1)
         self._diag_timer = self.create_timer(1., self.publish_diagnostics)
 
@@ -156,15 +82,7 @@ class MeshSkillImpl(Node):
         return TransitionCallbackReturn.SUCCESS
 
     def on_activate(self, state: State) -> TransitionCallbackReturn:
-        """
-        Activate the skill.
 
-        You usually want to do the following in this state:
-        - Create and start any timers performing periodic tasks
-        - Start processing data, and accepting action goals, if any
-
-        """
-        # Define a timer that fires every second to call the run function
         timer_period = 1  # in sec
         self._timer = self.create_timer(timer_period, self.run)
 
@@ -172,7 +90,6 @@ class MeshSkillImpl(Node):
         return super().on_activate(state)
 
     def on_deactivate(self, state: State) -> TransitionCallbackReturn:
-        """Stop the timer to stop calling the `run` function (main task of your application)."""
         self.get_logger().info("Stopping skill...")
         self.destroy_timer(self._timer)
 
@@ -180,17 +97,7 @@ class MeshSkillImpl(Node):
         return super().on_deactivate(state)
 
     def on_shutdown(self, state: State) -> TransitionCallbackReturn:
-        """
-        Shutdown the node, after a shutting-down transition is requested.
 
-        :return: The state machine either invokes a transition to the
-            "finalized" state or stays in the current state depending on the
-            return value.
-            TransitionCallbackReturn.SUCCESS transitions to "finalized".
-            TransitionCallbackReturn.FAILURE remains in current state.
-            TransitionCallbackReturn.ERROR or any uncaught exceptions to
-            "errorprocessing"
-        """
         self.get_logger().info('Shutting down mesh skill.')
 
         self.skill_server.destroy()
@@ -223,18 +130,4 @@ class MeshSkillImpl(Node):
         self._diag_pub.publish(arr)
 
     def run(self) -> None:
-        """
-        Background task of the skill.
-
-        The main task of your skill. This function will be triggered by
-        the timer in the class, and only when the timer is active.
-        """
-        #######################################
-        #
-        # TODO: Implement here any background
-        # task required by your skill
-        # If the skill is deactivated,
-        # this function is not called anymore
-        #
-
-        self.get_logger().info("skill mesh: performing background task...")
+          self.get_logger().info("skill mesh: performing background task...")

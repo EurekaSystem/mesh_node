@@ -1,29 +1,14 @@
 <?xml version="1.0"?>
 <package format="3">
   <name>mesh_skill_msgs</name>
-  <version>0.1.0</version>
-  <description>{{id}} skill definition</description>
+  <version>1.0.0</version>
+  <description>{mesh skill definition</description>
 
-  <!-- One maintainer tag required, multiple allowed, one person per tag -->
-  <!-- Example:  -->
-  <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="todo@todo.todo">TODO</maintainer>
+  <maintainer email="tech@eurekasystem.it">Eureka system</maintainer>
 
-  <!-- One license tag required, multiple allowed, one license per tag -->
-  <!-- Commonly used license strings: -->
-  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
+  <author>Gava Mattia</author>
+
   <license>Apache License 2.0</license>
-
-  <!-- Url tags are optional, but multiple are allowed, one per tag -->
-  <!-- Optional attribute type can be: website, bugtracker, or repository -->
-  <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/test</url> -->
-
-
-  <!-- Author tags are optional, multiple are allowed, one per tag -->
-  <!-- Authors do not have to be maintainers, but could be -->
-  <!-- Example: -->
-  <!-- <author email="jane.doe@example.com">Jane Doe</author> -->
 
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
   <buildtool_depend>rosidl_default_generators</buildtool_depend>
@@ -39,27 +24,35 @@
   <member_of_group>rosidl_interface_packages</member_of_group>
 
   <export>
-    <build_type>ament_cmake</build_type>
-    <skill content-type="json">
-      {
-        "id": "mesh",
-        "description": "{{id}} skill definition. [Write here what the skill is doing].",
-        "version": "0.1.0",
-        "interface": "action",
-        "default_interface_path": "/skill/mesh",
-        "datatype": "mesh_skill_msgs/action/Mesh",
-        "parameters": {
-          "in": [
-            {
-            "name": "skill_data",
+  <build_type>ament_cmake</build_type>
+  <skill content-type="json">
+    {
+      "id": "mesh",
+      "description": "Mesh skill definition. The skill generates a reconstructed 3D mesh from the point cloud of a specified object.",
+      "version": "1.0.0",
+      "interface": "action",
+      "default_interface_path": "src/mesh_skill_msgs/action",
+      "datatype": "mesh_skill_msgs/action/Mesh",
+      "parameters": {
+        "in": [
+          {
+            "name": "scan_id",
             "type": "string",
-            "description": "This parameter indicates..."
-            }
-        ]},
-        "functional_domains": [
-            "other"
+            "description": "This parameter uniquely identifies the object to generate the mesh for."
+          }
+        ],
+        "out": [
+          {
+            "name": "result",
+            "type": "int64",
+            "description": "This parameter represents the result and enables specifying various types of success and failure."
+          }
         ]
-      }
-    </skill>
-  </export>
+      },
+      "functional_domains": [
+        "perception"
+      ]
+    }
+  </skill>
+</export>
 </package>
