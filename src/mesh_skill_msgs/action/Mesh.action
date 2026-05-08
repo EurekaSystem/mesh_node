@@ -2,9 +2,9 @@
 # and must always be present.
 
 std_skills/Meta meta
-string skill_data
+string scan_id
 ---
 std_skills/Result result
-string value
+int64 result_s
 ---
 std_skills/Feedback feedback

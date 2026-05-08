@@ -2,7 +2,7 @@
 <package format="3">
   <name>mesh_skill_msgs</name>
   <version>1.0.0</version>
-  <description>{mesh skill definition</description>
+  <description>mesh skill definition</description>
 
   <maintainer email="tech@eurekasystem.it">Eureka system</maintainer>
 
