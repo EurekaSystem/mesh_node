@@ -87,7 +87,6 @@ The following parameters are part of the **custom action interface** `mesh_skill
 
 - **result** (`int64`)  
   Represents the execution result, allowing different success or failure states.
-To ensure the mesh reconstruction pipeline runs smoothly, make sure the following conditions are satisfied.
 
 ---
 
