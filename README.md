@@ -123,10 +123,10 @@ data/
     └── pcl.ply
 ```
 
-Input: The input is a standard colored point cloud in PLY format.
-Testing: The reconstruction method has been tested on point clouds with an average of 1M points and a maximum of approximately 3M points.
-Optimization: The parameters and settings are optimized for reconstructing point clouds with a radius of approximately 150 units (The PLY file format does not explicitly store measurement units).
-Customization: The MOLT parameter can be adjusted if the point cloud being reconstructed differs significantly in scale.
+The `input` is a standard colored point cloud in PLY format.
+The `reconstruction` method has been tested on point clouds with an average of 1M points and a maximum of approximately 3M points.
+The `parameters` and `settings` are optimized for reconstructing point clouds with a radius of approximately 150 units (The PLY file format does not explicitly store measurement units).
+The `MOLT parameter` can be adjusted if the point cloud being reconstructed differs significantly in scale.
 
 ---
 
@@ -139,14 +139,12 @@ The skill will generate the following files inside the same folder:
 ├── mesh_<scan_id>.ply
 └── mesh_<scan_id>_double.ply
 ```
-
-*   **Single-sided mesh:**`mesh_<scan_id>.ply` Normals point outward from the object where possible.
-*   **Double-sided mesh:** `mesh_<scan_id>_double.ply` Supports two-sided rendering.
-
 These two reconstruction types are designed for different use cases and rendering pipelines: 
 
-Double-sided mesh: Recommended when normals are required for both faces (for example when calculating cobot toolpaths for both sides of the mesh).
-Single-sided mesh: Provides a more lightweight alternative when only the external surface is of interest.
+*   **Single-sided mesh:**`mesh_<scan_id>.ply` Normals point outward from the object where possible.
+    Provides a more lightweight alternative when only the external surface is of interest.
+*   **Double-sided mesh:** `mesh_<scan_id>_double.ply` Supports two-sided rendering.
+    Recommended when normals are required for both faces (for example when calculating cobot toolpaths for both sides of the mesh).
 
 ---
 
