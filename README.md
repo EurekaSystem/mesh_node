@@ -145,7 +145,7 @@ The skill will generate the following files inside the same folder:
 
 These two reconstruction types are designed for different use cases and rendering pipelines: 
 
-Double-sided mesh: Recommended when normals are required for both faces (e.g., when calculating cobot toolpaths for both sides of the mesh).
+Double-sided mesh: Recommended when normals are required for both faces (for example when calculating cobot toolpaths for both sides of the mesh).
 Single-sided mesh: Provides a more lightweight alternative when only the external surface is of interest.
 
 ---
