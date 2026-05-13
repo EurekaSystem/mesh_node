@@ -123,6 +123,11 @@ data/
     └── pcl.ply
 ```
 
+Input: The input is a standard colored point cloud in PLY format.
+Testing: The reconstruction method has been tested on point clouds with an average of 1M points and a maximum of approximately 3M points.
+Optimization: The parameters and settings are optimized for reconstructing point clouds with a radius of approximately 150 units (The PLY file format does not explicitly store measurement units).
+Customization: The MOLT parameter can be adjusted if the point cloud being reconstructed differs significantly in scale.
+
 ---
 
 ### Output Files
@@ -138,7 +143,10 @@ The skill will generate the following files inside the same folder:
 *   **Single-sided mesh:**`mesh_<scan_id>.ply` Normals point outward from the object where possible.
 *   **Double-sided mesh:** `mesh_<scan_id>_double.ply` Supports two-sided rendering.
 
-These two reconstruction types are suited for different use cases and rendering pipelines.
+These two reconstruction types are designed for different use cases and rendering pipelines: 
+
+Double-sided mesh: Recommended when normals are required for both faces (e.g., when calculating cobot toolpaths for both sides of the mesh).
+Single-sided mesh: Provides a more lightweight alternative when only the external surface is of interest.
 
 ---
 
@@ -292,3 +300,11 @@ Common failures are mainly related to:
     *   Possible fixes: adjust algorithm parameters or rescale the point cloud
 *   **Memory saturation**
     *   Usually fixed by adding swap memory
+
+
+To mitigate potential algorithmic failures and manage computational resources, the following parameters can be tuned:
+
+* depth: Higher values allow for the reconstruction of more complex shapes. Lower values reduce computational overhead and memory usage.
+* target_triangles: Acts as a threshold to prevent memory exhaustion.
+
+All errors are logged during execution. For detailed information regarding specific error types, please refer to the Open3D documentation.
