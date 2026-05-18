@@ -306,3 +306,10 @@ To mitigate potential algorithmic failures and manage computational resources, t
 * target_triangles: Acts as a threshold to prevent memory exhaustion.
 
 All errors are logged during execution. For detailed information regarding specific error types, please refer to the Open3D documentation.
+
+
+
+
+
+
+This work has been supported by the project “Agile, human-centric, and Real-tIme enabled open SourcE technologies advancing industrial HRI in Europe” (ARISE), which received funding from the European Union’s Horizon Europe research and innovation program under grant agreement No. 101135784.
